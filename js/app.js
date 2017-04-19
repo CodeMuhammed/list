@@ -55,9 +55,12 @@ function Item(data) {
 		self.items.push(new Item({ title: this.newItemText(), edit: false }));
 		self.newItemText("");
 	};
-	self.removeItem = function(item) { self.items.destroy(item) };
 
-	self.removeCompleted = function(){
+	self.removeItem = function(item) {
+		 self.items.destroy(item) 
+	};
+
+	self.removeCompleted = function() {
 		self.items.destroyAll(self.completeItems());
 	};
 
@@ -81,6 +84,11 @@ function todoLists() {
 	self.addList = function(name) {
 		self.lists.push(new todoList(self.newListText(), []));
 		self.newListText("");
+	};
+
+	// Operation
+	self.removeList = function(list) {
+		self.lists.destroy(list) 
 	};
 }
  

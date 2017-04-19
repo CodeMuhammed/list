@@ -4,66 +4,89 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+		<!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
 		<link rel="stylesheet" type="text/css" href="css/styles.css">	
 
 	</head>
 	<body>
-		<div class="title">
-			<h1></h1>
-	    </div>
+		<div class="col-xs-12 menu">
+			<span class="logo">
+				<img src="img/logo.png" alt="">
+			</span>
+			<span class="text">
+				ToDo List App
+			</span>
+		</div>
 
-		<h2>TODO LISTS</h2>
-		<div>
+		<div class="col-xs-12 sub-menu">
 			<form data-bind="submit: data.addList" id="create-List">
-				<input class="new-todo" data-bind="value: data.newListText" placeholder="List name" />
+				<div class="form-group">
+					<input class="new-todo form-control" data-bind="value: data.newListText" placeholder="Add a new Todo List" />
+				</div>
 			</form>
 		</div>
 
-		<ul data-bind="foreach: data.lists">
-			<li>
-				<div>
-					<span data-bind="text: title"> </span> 
-					<button data-bind="click: toggleEditTitle" style="margin-left:2em"> edit</button>
-					<div data-bind="visible: editTitle">
-						<form data-bind="submit: toggleEditTitle" id="update-title">
-							<input class="new-todo" data-bind="value: title" placeholder="Edit title" />
-						</form>
-					</div>
-				</div>
-				<hr>
-				<div>
-					<form data-bind="submit: addItem" id="create-todo">
-						<input class="new-todo" data-bind="value: newItemText" placeholder="Add todo" />
-					</form>
-				</div>
-				<div>
-					You have <b data-bind="text: incompleteItems().length">&nbsp;</b> items to do!
-					<span data-bind="visible: incompleteItems().length == 0"></span>
-					<a data-bind="visible: completeItems().length > 0, click: removeCompleted " href="#" id="clear-completed">Clear Completed Items</a>
-				</div>
-				<div class="todos">
-					<ul data-bind="foreach: items, visible: items().length > 0" id="todo-list">
-						<li>
-							<div class="todo" data-bind="css: { editing: edit }, event: { dblclick: startEdit }">
-								<div class="display" data-bind="css: { done: isDone }">
-									<input type="checkbox" class="check" data-bind="checked: isDone" />
-									<div class="todo-text" data-bind="text: title"></div>
-									<a href="#" class="todo-destroy" data-bind="click: $parent.removeItem">&times;</a>
+		<div class="col-xs-12 todolists">
+			<div class="col-xs-12" data-bind="foreach: data.lists">
+				<div class="col-sm-4 todolist">
+				   <div class="col-xs-12 header">
+					    <span class="title" data-bind="if: !editTitle()">
+							<span data-bind="text: title"> </span> 
+						</span>
+						<span data-bind="visible: editTitle">
+							<form style="display: inline" data-bind="submit: toggleEditTitle" id="update-title">
+								<input class="new-todo" data-bind="value: title" placeholder="Edit title" />
+							</form>
+						</span>
+						<div class="btn-group pull-right" role="group" aria-label="Basic example">
+							<button type="button" data-bind="click: toggleEditTitle" class="btn btn-xs btn-secondary">edit</button>
+							<button type="button" data-bind="click: $parent.data.removeList" class="btn btn-xs btn-warning">delete</button>
+						</div>
+				   </div>
+				   <div class="col-xs-12 list">
+					   <div class="col-xs-12 header">
+						   <form data-bind="submit: addItem" id="create-todo">
+							   <div class="form-group">
+									<input class="new-todo form-control" data-bind="value: newItemText" placeholder="Add todo" />
 								</div>
-								<div class="edit">
-									<form data-bind="submit: updateItem">
-										<input data-bind="value: title" />
-									</form>
+							</form>
+					   </div>
+					   <div class="col-xs-12 content">
+						   <div class="col-xs-12 alert alert-info">
+								You have <b data-bind="text: incompleteItems().length">&nbsp;</b> items to do!
+								<span data-bind="visible: incompleteItems().length == 0"></span>
+								<a data-bind="visible: completeItems().length > 0, click: removeCompleted " href="#" id="clear-completed">Clear Completed Items</a>
+							</div>
+							<div data-bind="foreach: items, visible: items().length > 0" id="todo-list">
+								<div class="col-xs-12 item">
+									<label class="custom-control custom-checkbox">
+										<input type="checkbox" class="check custom-control-input" data-bind="checked: isDone" />
+										<span class="custom-control-indicator"></span>
+										<span class="custom-control-description" data-bind="text: title"></span>
+										<a href="#" class="todo-destroy" data-bind="click: $parent.removeItem">&times;</a>
+									</label>
+									<div class="todo" data-bind="css: { editing: edit }, event: { dblclick: startEdit }">
+										<div class="edit">
+											<form data-bind="submit: updateItem">
+												<input data-bind="value: title" />
+											</form>
+										</div>
+									</div>
 								</div>
 							</div>
-						</li> 
-					</ul>
+					   </div>
+				   </div>
 				</div>
-			</li>
-		</ul>
-	</body>
-	<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
-	<script type="text/javascript" src="js/knockout-2.0.0.js"></script>		
-	<script src="js/app.js"></script>
+			</div>
+		</div>
 
+		<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="js/knockout-2.0.0.js"></script>		
+		<script src="js/app.js"></script>
+	</body>
 </html>
